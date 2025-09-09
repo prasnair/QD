@@ -1,0 +1,119 @@
+
+# QMSDesk Product Requirements Document (PRD)
+
+**Document ID:** PRD-QMSD-001
+**Version:** 1.0
+**Status:** Approved
+**Date:** 2024-07-27
+
+---
+
+## 1. Introduction
+
+### 1.1. Executive Summary
+QMSDesk is a comprehensive, multi-tenant, web-based electronic Quality Management System (eQMS) designed to help regulated life sciences companies streamline their quality processes, ensure compliance with GxP regulations (such as FDA 21 CFR Part 11), and improve operational efficiency. The platform provides a suite of integrated modules for managing critical quality processes, including document control, change management, CAPA, audits, training, and more, all within a secure and auditable environment.
+
+### 1.2. Product Goals
+*   **Streamline Compliance:** Centralize and automate quality processes to simplify adherence to regulatory requirements.
+*   **Enhance Traceability:** Provide a clear, interconnected view of quality data, linking events to deviations, CAPAs, and change controls.
+*   **Improve Efficiency:** Reduce the administrative burden of paper-based systems through automated workflows, notifications, and task management.
+*   **Ensure Data Integrity:** Maintain a secure, time-stamped audit trail for all GxP-relevant actions and enforce compliance through electronic signatures.
+*   **Empower Users:** Provide an intuitive, role-based interface that gives users the tools they need to perform their jobs effectively.
+
+---
+
+## 2. Target Audience & User Personas
+
+QMSDesk is designed for small to medium-sized organizations in regulated industries (e.g., pharmaceuticals, biotech, medical devices). The system serves a variety of user personas, each with specific roles and permissions.
+
+| Permission Set (Role)           | Primary Responsibilities & Goals                                                                                              |
+|:--------------------------------|:------------------------------------------------------------------------------------------------------------------------------|
+| **Organization Administrator**  | Configure the system for their organization, manage users, and customize workflows. Goal: Tailor the eQMS to company needs. |
+| **Quality Manager**             | Oversee all quality processes, approve critical records, monitor system health via dashboards. Goal: Ensure overall compliance and quality. |
+| **QA Reviewer**                 | Review and approve records at various workflow stages. Goal: Ensure records are accurate, complete, and compliant. |
+| **Document Controller**         | Manage the entire lifecycle of controlled documents. Goal: Maintain a single source of truth for all procedures. |
+| **CAPA Owner / Investigator**   | Investigate deviations, determine root cause, and implement corrective/preventive actions. Goal: Effectively resolve issues. |
+| **General User**                | Log quality events, complete assigned training, access documents, and perform tasks related to their job function. Goal: Fulfill their quality responsibilities efficiently. |
+| **Department Head**             | Approve documents and changes relevant to their department. Goal: Ensure changes and procedures are appropriate for their team. |
+
+---
+
+## 3. Features & Functionality
+
+### 3.1. Core Platform Features
+
+*   **Multi-Tenant Architecture:** The system is designed to securely serve multiple organizations from a single instance, with strict data segregation enforced by an `organizationId` on all records.
+*   **Role-Based Access Control (RBAC):** System access is governed by assigning users one or more Permission Sets (Roles), which control their ability to view, create, edit, and approve records.
+*   **Personalized Dashboard:** Upon login, users are presented with a dashboard tailored to their role, featuring a "My Workspace" tab with pending tasks and items requiring attention. Managers and Admins have access to system-wide analytics tabs.
+*   **Electronic Signatures (21 CFR Part 11 Compliant):** Critical approval actions are secured with an electronic signature, requiring the user to re-enter their password and provide a meaningful reason for the signature.
+*   **Audit Trail:** All GxP-relevant actions (creation, modification, deletion, approvals) are recorded in a secure, time-stamped audit trail that is not user-editable.
+*   **Task Management:** The system automatically generates tasks for users when they are assigned a step in a workflow (e.g., "Review Document," "Perform RCA"), which appear on their dashboard.
+
+### 3.2. Modules
+
+#### 3.2.1. Document Management
+*   **Functionality:** Create, revise, review, approve, and archive controlled documents (SOPs, Policies, etc.).
+*   **Key Features:**
+    *   Configurable, multi-step approval workflows.
+    *   Automatic version control, with previous versions maintained in an accessible archive.
+    *   Centralized, searchable repository for all documents.
+    *   Watermarked PDF downloads for "Controlled Copies" of effective documents.
+    *   Periodic review scheduling and notifications.
+
+#### 3.2.2. Quality Events & Deviations
+*   **Functionality:** Log any quality-related event and manage the formal investigation process for deviations.
+*   **Key Features:**
+    *   Any user can log a new Quality Event with detailed information.
+    *   QA assesses events and can escalate them to create a linked Deviation record, ensuring traceability.
+    *   The Deviation module guides investigators through documenting the investigation, assigning a team, and determining the root cause.
+    *   Approval workflows for the investigation process.
+
+#### 3.2.3. CAPA (Corrective and Preventive Actions)
+*   **Functionality:** Manage the entire lifecycle of Corrective and Preventive Actions.
+*   **Key Features:**
+    *   CAPAs can be created from assessed Quality Events, Deviations, Audits, or proactively.
+    *   Structured forms guide users through RCA, action planning, implementation, and effectiveness checks.
+    *   Separate, configurable workflows for each major stage (RCA Approval, Implementation Approval, etc.) allow for rework loops.
+    *   Clear traceability back to the source record.
+
+#### 3.2.4. Change Control
+*   **Functionality:** Manage and document all planned changes to processes, systems, or documents in a controlled manner.
+*   **Key Features:**
+    *   Users can request new changes, which are then routed for formal assessment.
+    *   Multi-stage review process covering Impact Assessment, Technical Review, and Final QA Approval.
+    *   Configurable workflows for each stage of the review.
+    *   Ability to link change records to resulting actions, such as document revisions.
+
+#### 3.2.5. Administration
+*   **Functionality:** Centralized control panel for System Administrators to configure the application.
+*   **Key Features:**
+    *   **User Management:** Create, edit, and deactivate users. Assign Job Functions and Permission Sets.
+    *   **Impersonation:** Admins can impersonate other users to test permissions and workflows.
+    *   **Workflow Configuration:** Define and reorder approval steps for all key processes.
+    *   **System List Management:** Customize dropdown values (e.g., Event Types, Departments, Risk Levels) across the system.
+    *   **Bulk Import:** Tool for migrating historical data (e.g., Users) into the system via CSV templates.
+
+---
+
+## 4. Technical Requirements & System Attributes
+
+| ID         | Requirement         | Description                                                                                                   |
+|:-----------|:--------------------|:--------------------------------------------------------------------------------------------------------------|
+| **NFR-01** | **Performance**     | Page loads and critical interactions should complete in under 3 seconds under normal network conditions.        |
+| **NFR-02** | **Security**        | Role-based access control must be enforced for all data access. Data must be encrypted in transit (TLS 1.2+). |
+| **NFR-03** | **Compliance**      | The system must be developed to be validatable for 21 CFR Part 11 and GxP compliance.                          |
+| **NFR-04** | **Availability**    | The service should maintain a high level of availability (e.g., 99.9% uptime), with scheduled maintenance windows communicated in advance. |
+| **NFR-05** | **Data Integrity**   | All data must be protected from unauthorized alteration. Audit trails must be immutable.                       |
+| **NFR-06** | **Scalability**     | The multi-tenant architecture must be capable of handling a growing number of organizations and users without performance degradation. |
+
+---
+
+## 5. Future Considerations (Out of Scope for v1.0)
+
+*   **Real Backend Integration:** Replace the current in-memory context providers with a robust, scalable database backend like Google Firestore.
+*   **Full Firebase Authentication:** Integrate with Firebase Authentication to handle real user accounts, password policies, and federated identity (e.g., SAML/OIDC with Entra ID).
+*   **Immutable Audit Log Service:** Connect the `logUserAction` service to a dedicated, write-once logging service or a locked-down Firestore collection.
+*   **Email Notifications:** Implement an email notification system for task assignments, approval requests, and overdue alerts.
+*   **Advanced Reporting & Analytics:** Develop a dedicated reporting module with customizable dashboards and data export capabilities.
+*   **AI/Genkit Integration:** Re-integrate and expand AI-powered assistants for tasks like RCA suggestions, document summarization, or audit checklist generation.
+

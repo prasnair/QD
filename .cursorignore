@@ -1,0 +1,38 @@
+# Allow .env.local to be read by the application
+!.env.local
+
+# Ignore other sensitive files
+.env
+.env.production
+.env.staging
+*.key
+*.pem
+*.p12
+*.pfx
+
+# Ignore build outputs
+.next/
+out/
+dist/
+build/
+
+# Ignore dependencies
+node_modules/
+
+# Ignore logs
+*.log
+logs/
+
+# Ignore OS files
+.DS_Store
+Thumbs.db
+
+# Ignore IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Ignore temporary files
+*.tmp
+*.temp
